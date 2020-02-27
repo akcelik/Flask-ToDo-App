@@ -1,0 +1,17 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+    <script>
+        $('body')
+            .toast({
+            title: 'Message',
+            class: '{{category}}',
+            message: `{{ message }}`,
+            showProgress: 'bottom',
+            classProgress: 'red',
+            position: 'bottom right',
+            });
+    </script>
+    {% endfor %}
+  {% endif %}
+{% endwith %}  

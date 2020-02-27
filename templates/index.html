@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
+    <style>body > .ui.container {
+      margin-top: 3em;
+    }</style>
+    <title>ToDo App</title>
+</head>
+<body>
+{% include "includes/messages.html" %}
+    <div class="ui attached stackable menu">
+        <div class="ui container">
+            <a class="item" href="/">
+                <i class="tasks icon"></i> ToTo App
+            </a>
+           
+            
+            <div class="ui simple dropdown right item">
+                More
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                <a class="item"><i class="user icon"></i> Login</a>
+                <a class="item"><i class="user plus icon"></i> Register</a>
+                <a class="item"><i class="bars icon"></i> Dashbord</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="ui container">
+    
+   <div class="ui centered grid">
+        <div class="computer only row">
+            <div class="column">
+                <form action="/add" method="POST">
+                    <div class="ui action fluid tiny input">
+                        <input type="text" name="title" placeholder="Type ToDo">
+                        <button class="ui labeled icon primary tiny button">
+                            <i class="plus icon"></i>
+                            Add ToDo
+                        </button>
+                    </div>
+                 </form>
+            </div>
+        </div>
+        <div class="computer only row">
+            <div class="column">
+           
+              <div class="ui raised padded segment"> 
+                
+            
+            {% if todos == [] %}
+            <div class="ui icon warning message">
+                <i class="exclamation icon"></i>
+                <div class="content">
+                <div class="header">
+                    ToDo list empty
+                </div>
+                    <p>Can not found any todo item. You can add a new Todo...</p>
+                </div>
+            </div>
+            {% else %}
+            
+                <table class="ui very basic compact small table">
+                    <thead>
+                        <tr>
+                            <th><h4>ToDo List</h4></th>
+                            <th style="width:75px"></th>
+                            <th style="width:75px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for todo in todos %}
+                        <tr>
+                            <td>
+                            {% if todo.complete %}
+                                <span class="ui grey text" style="text-decoration:line-through">{{todo.title}}</span>
+                            {% else %}
+                                <span class="ui text">{{todo.title}}</span>
+                            {% endif %}
+                            </td>
+                            <td>
+                            {% if todo.complete %}
+                                <a href="/complete/{{todo.id}}" class="btn btn-light btn-sm" title="Update state"><i class="toggle large off icon"></i></a>
+                            {% else %}
+                                <a href="/complete/{{todo.id}}" class="btn btn-light btn-sm" title="Update state"><i class="toggle large on icon"></i></a>
+                            {% endif %}
+                            </td>
+                            <td><a href="/delete/{{todo.id}}" class="btn btn-danger btn-sm" title="Delete item"><i class="trash alternate outline icon"></i></a></td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                
+            {% endif %}
+            </div>
+        </div>
+    </div>  
+    </div>
+
+
+    </div>
+</body>
+</html>
