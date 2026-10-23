@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ heading }} - ToDo App{% endblock %}
+
+{% block content %}
+<div class="ui centered grid">
+    <div class="row">
+        <div class="sixteen wide mobile ten wide tablet six wide computer column">
+            <div class="ui raised padded segment">
+                <h3 class="ui header">{{ heading }}</h3>
+                <form class="ui form" method="POST">
+                    <div class="field">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" value="{{ username or '' }}" maxlength="80" required autofocus>
+                    </div>
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    {% if confirm %}
+                    <div class="field">
+                        <label for="confirm">Confirm password</label>
+                        <input type="password" id="confirm" name="confirm" required>
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="ui primary fluid button">{{ heading }}</button>
+                </form>
+                <div class="ui divider"></div>
+                {% if confirm %}
+                    Already have an account? <a href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                    No account yet? <a href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

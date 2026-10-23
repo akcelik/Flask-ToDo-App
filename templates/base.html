@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
+    <style>body > .ui.container {
+      margin-top: 3em;
+    }</style>
+    <title>{% block title %}ToDo App{% endblock %}</title>
+</head>
+<body>
+{% include "includes/messages.html" %}
+    <div class="ui attached stackable menu">
+        <div class="ui container">
+            <a class="item" href="{{ url_for('index') }}">
+                <i class="tasks icon"></i> ToDo App
+            </a>
+
+            <div class="ui simple dropdown right item">
+                {% if current_user.is_authenticated %}
+                    <i class="user icon"></i> {{ current_user.username }}
+                {% else %}
+                    More
+                {% endif %}
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                {% if current_user.is_authenticated %}
+                    <a class="item" href="{{ url_for('dashboard') }}"><i class="bars icon"></i> Dashboard</a>
+                    <form action="{{ url_for('logout') }}" method="POST" style="margin:0">
+                        <button type="submit" class="item" style="width:100%;border:none;background:none;cursor:pointer;text-align:left">
+                            <i class="sign out icon"></i> Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="item" href="{{ url_for('login') }}"><i class="user icon"></i> Login</a>
+                    <a class="item" href="{{ url_for('register') }}"><i class="user plus icon"></i> Register</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="ui container">
+{% block content %}{% endblock %}
+</div>
+</body>
+</html>

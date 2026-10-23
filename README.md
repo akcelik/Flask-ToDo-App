@@ -2,7 +2,11 @@ Flask ToDo App
 ==============
 
 A simple to-do list web app built with Flask, Flask-SQLAlchemy and PostgreSQL.
-You can add tasks, mark them as complete (and back), and delete them.
+
+- Register and log in with a username and password (passwords are stored hashed)
+- Each user has their own private ToDo list
+- Add tasks, mark them as complete (and back), and delete them
+- Dashboard with total / completed / pending counts
 
 ## Setup
 
@@ -22,7 +26,11 @@ Settings are read from environment variables:
 | `SECRET_KEY`   | `dev-secret-key-change-me` (change this in production) |
 | `FLASK_DEBUG`  | unset (set to `1` to enable debug mode)               |
 
-Tables are created automatically on startup.
+Tables are created automatically on startup. If you have a database from the
+older version (before user accounts), a `user_id` column is added to the
+`to_do` table automatically. Old ToDo items have no owner, so they won't show
+up for any user; assign them with e.g.
+`UPDATE to_do SET user_id = 1 WHERE user_id IS NULL;`
 
 ## Run
 

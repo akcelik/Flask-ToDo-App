@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
-    <style>body > .ui.container {
-      margin-top: 3em;
-    }</style>
-    <title>ToDo App</title>
-</head>
-<body>
-{% include "includes/messages.html" %}
-    <div class="ui attached stackable menu">
-        <div class="ui container">
-            <a class="item" href="/">
-                <i class="tasks icon"></i> ToDo App
-            </a>
-           
-            
-            <div class="ui simple dropdown right item">
-                More
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                <a class="item"><i class="user icon"></i> Login</a>
-                <a class="item"><i class="user plus icon"></i> Register</a>
-                <a class="item"><i class="bars icon"></i> Dashboard</a>
-                </div>
-            </div>
-        </div>
-    </div>
-<div class="ui container">
+{% extends "base.html" %}
+
+{% block title %}ToDo App{% endblock %}
+
+{% block content %}
     
    <div class="ui centered grid">
         <div class="row">
@@ -108,8 +79,4 @@
         </div>
     </div>  
     </div>
-
-
-    </div>
-</body>
-</html>
+{% endblock %}
