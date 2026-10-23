@@ -1,38 +1,40 @@
 {% extends "base.html" %}
 
 {% block title %}{{ heading }} - ToDo App{% endblock %}
+{% block container_class %}narrow{% endblock %}
 
 {% block content %}
-<div class="ui centered grid">
-    <div class="row">
-        <div class="sixteen wide mobile ten wide tablet six wide computer column">
-            <div class="ui raised padded segment">
-                <h3 class="ui header">{{ heading }}</h3>
-                <form class="ui form" method="POST">
-                    <div class="field">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="{{ username or '' }}" maxlength="80" required autofocus>
-                    </div>
-                    <div class="field">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    {% if confirm %}
-                    <div class="field">
-                        <label for="confirm">Confirm password</label>
-                        <input type="password" id="confirm" name="confirm" required>
-                    </div>
-                    {% endif %}
-                    <button type="submit" class="ui primary fluid button">{{ heading }}</button>
-                </form>
-                <div class="ui divider"></div>
-                {% if confirm %}
-                    Already have an account? <a href="{{ url_for('login') }}">Login</a>
-                {% else %}
-                    No account yet? <a href="{{ url_for('register') }}">Register</a>
-                {% endif %}
+<h1 class="page-title">{{ 'Create an account' if confirm else 'Welcome back' }}</h1>
+<p class="page-subtitle">{{ 'Start organizing your tasks in seconds.' if confirm else 'Log in to see your ToDo list.' }}</p>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="field">
+                <label class="label" for="username">Username</label>
+                <input class="input" type="text" id="username" name="username" value="{{ username or '' }}" maxlength="80" required autofocus autocomplete="username">
             </div>
-        </div>
+            <div class="field">
+                <label class="label" for="password">Password</label>
+                <input class="input" type="password" id="password" name="password" required
+                       {% if confirm %}minlength="6" autocomplete="new-password" placeholder="At least 6 characters"{% else %}autocomplete="current-password"{% endif %}>
+            </div>
+            {% if confirm %}
+            <div class="field">
+                <label class="label" for="confirm">Confirm password</label>
+                <input class="input" type="password" id="confirm" name="confirm" required minlength="6" autocomplete="new-password">
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary btn-block">{{ heading }}</button>
+        </form>
     </div>
 </div>
+
+<p class="auth-footer">
+    {% if confirm %}
+        Already have an account? <a href="{{ url_for('login') }}">Login</a>
+    {% else %}
+        No account yet? <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+</p>
 {% endblock %}

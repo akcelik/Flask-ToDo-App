@@ -1,82 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}ToDo App{% endblock %}
+{% block title %}My list - ToDo App{% endblock %}
 
 {% block content %}
-    
-   <div class="ui centered grid">
-        <div class="row">
-            <div class="column">
-                <form action="{{ url_for('addTodo') }}" method="POST">
-                    <div class="ui action fluid tiny input">
-                        <input type="text" name="title" placeholder="Type ToDo" maxlength="80" required>
-                        <button class="ui labeled icon primary tiny button">
-                            <i class="plus icon"></i>
-                            Add ToDo
-                        </button>
-                    </div>
-                 </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
-           
-              <div class="ui raised padded segment"> 
-                
-            
-            {% if not todos %}
-            <div class="ui icon warning message">
-                <i class="exclamation icon"></i>
-                <div class="content">
-                <div class="header">
-                    ToDo list empty
-                </div>
-                    <p>No ToDo items found. You can add a new ToDo...</p>
-                </div>
-            </div>
-            {% else %}
-            
-                <table class="ui very basic compact small unstackable table">
-                    <thead>
-                        <tr>
-                            <th><h4>ToDo List</h4></th>
-                            <th style="width:75px"></th>
-                            <th style="width:75px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for todo in todos %}
-                        <tr>
-                            <td>
-                            {% if todo.complete %}
-                                <span class="ui grey text" style="text-decoration:line-through">{{todo.title}}</span>
-                            {% else %}
-                                <span class="ui text">{{todo.title}}</span>
-                            {% endif %}
-                            </td>
-                            <td>
-                                <form action="{{ url_for('complete', id=todo.id) }}" method="POST" style="margin:0">
-                                    <button type="submit" class="ui icon basic mini button" title="Update state">
-                                        <i class="toggle large {{ 'off' if todo.complete else 'on' }} icon"></i>
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="{{ url_for('delete', id=todo.id) }}" method="POST" style="margin:0">
-                                    <button type="submit" class="ui icon basic red mini button" title="Delete item">
-                                        <i class="trash alternate outline icon"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
+{% set done = todos | selectattr('complete') | list | length %}
+<h1 class="page-title">Hi, {{ current_user.username }}</h1>
+<p class="page-subtitle">
+    {% if not todos %}Nothing planned yet. Add your first task below.
+    {% elif done == todos | length %}All tasks done. Nice work!
+    {% else %}You have {{ todos | length - done }} task{{ 's' if todos | length - done != 1 }} left.
+    {% endif %}
+</p>
 
-                    </tbody>
-                </table>
-                
-            {% endif %}
-            </div>
-        </div>
-    </div>  
+<div class="card">
+    <form class="add-form" action="{{ url_for('addTodo') }}" method="POST">
+        <input class="input" type="text" name="title" placeholder="What needs to be done?" maxlength="80" required autofocus aria-label="New ToDo">
+        <button type="submit" class="btn btn-primary" title="Add ToDo">
+            {{ icon('plus') }}<span class="btn-text">Add</span>
+        </button>
+    </form>
+
+    {% if not todos %}
+    <div class="empty">
+        <div class="empty-icon">{{ icon('list') }}</div>
+        <h3>ToDo list empty</h3>
+        <p>Your tasks will appear here.</p>
     </div>
+    {% else %}
+    <div class="list-header">
+        <span>Tasks</span>
+        <span class="badge">{{ done }} / {{ todos | length }}</span>
+    </div>
+    <ul class="todo-list">
+        {% for todo in todos %}
+        <li class="todo-item {{ 'done' if todo.complete }}">
+            <form action="{{ url_for('complete', id=todo.id) }}" method="POST">
+                <button type="submit" class="check" title="{{ 'Mark as not done' if todo.complete else 'Mark as done' }}">
+                    {{ icon('check') }}
+                </button>
+            </form>
+            <span class="todo-title">{{ todo.title }}</span>
+            <form action="{{ url_for('delete', id=todo.id) }}" method="POST">
+                <button type="submit" class="icon-btn" title="Delete item">{{ icon('trash') }}</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
 {% endblock %}

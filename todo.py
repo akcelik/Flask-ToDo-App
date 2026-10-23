@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message = "Please log in to see your ToDo list"
-login_manager.login_message_category = "warning"
+login_manager.login_message_category = "info"
 
 
 class User(UserMixin, db.Model):
@@ -101,7 +101,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("Logged out", "warning")
+    flash("Logged out", "info")
     return redirect(url_for("login"))
 
 
@@ -142,7 +142,7 @@ def complete(id):
     todo = get_own_todo_or_404(id)
     todo.complete = not todo.complete
     db.session.commit()
-    flash("ToDo updated successfully", "warning")
+    flash("ToDo updated successfully", "success")
     return redirect(url_for("index"))
 
 
@@ -152,7 +152,7 @@ def delete(id):
     todo = get_own_todo_or_404(id)
     db.session.delete(todo)
     db.session.commit()
-    flash("ToDo deleted successfully", "error")
+    flash("ToDo deleted successfully", "info")
     return redirect(url_for("index"))
 
 

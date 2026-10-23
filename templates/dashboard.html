@@ -3,35 +3,37 @@
 {% block title %}Dashboard - ToDo App{% endblock %}
 
 {% block content %}
-<div class="ui centered grid">
-    <div class="row">
-        <div class="column">
-            <div class="ui raised padded segment">
-                <h3 class="ui header">Dashboard</h3>
-                <div class="ui three small statistics">
-                    <div class="statistic">
-                        <div class="value">{{ total }}</div>
-                        <div class="label">Total</div>
-                    </div>
-                    <div class="green statistic">
-                        <div class="value">{{ done }}</div>
-                        <div class="label">Completed</div>
-                    </div>
-                    <div class="orange statistic">
-                        <div class="value">{{ total - done }}</div>
-                        <div class="label">Pending</div>
-                    </div>
-                </div>
-                {% if total %}
-                <div class="ui divider"></div>
-                <div class="ui green progress" data-percent="{{ percent }}">
-                    <div class="bar" style="width: {{ percent }}%"></div>
-                    <div class="label">{{ percent }}% completed</div>
-                </div>
-                {% endif %}
-                <a class="ui basic button" href="{{ url_for('index') }}"><i class="arrow left icon"></i> Back to list</a>
-            </div>
+<h1 class="page-title">Dashboard</h1>
+<p class="page-subtitle">An overview of your tasks.</p>
+
+<div class="stats">
+    <div class="card stat">
+        <div class="stat-label">Total</div>
+        <div class="stat-value">{{ total }}</div>
+    </div>
+    <div class="card stat done">
+        <div class="stat-label">Completed</div>
+        <div class="stat-value">{{ done }}</div>
+    </div>
+    <div class="card stat pending">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value">{{ total - done }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="progress-head">
+            <span>Progress</span>
+            <span>{{ percent }}% completed</span>
+        </div>
+        <div class="progress" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" style="width: {{ percent }}%"></div>
         </div>
     </div>
+</div>
+
+<div class="actions">
+    <a class="btn btn-ghost" href="{{ url_for('index') }}">{{ icon('arrow-left') }} Back to list</a>
 </div>
 {% endblock %}

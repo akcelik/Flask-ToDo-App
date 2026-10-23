@@ -1,17 +1,14 @@
+{% from "includes/icons.html" import icon %}
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
+  <div class="flashes">
     {% for category, message in messages %}
-    <script>
-        $('body')
-            .toast({
-            title: 'Message',
-            class: '{{category}}',
-            message: `{{ message }}`,
-            showProgress: 'bottom',
-            classProgress: 'red',
-            position: 'bottom right',
-            });
-    </script>
+    <div class="flash {{ category }}" role="status">
+      {{ icon({'success': 'success', 'error': 'alert'}.get(category, 'info')) }}
+      <span>{{ message }}</span>
+      <button type="button" class="flash-close" aria-label="Close" onclick="this.parentElement.remove()">{{ icon('x') }}</button>
+    </div>
     {% endfor %}
+  </div>
   {% endif %}
-{% endwith %}  
+{% endwith %}
