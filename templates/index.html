@@ -16,7 +16,7 @@
     <div class="ui attached stackable menu">
         <div class="ui container">
             <a class="item" href="/">
-                <i class="tasks icon"></i> ToTo App
+                <i class="tasks icon"></i> ToDo App
             </a>
            
             
@@ -26,7 +26,7 @@
                 <div class="menu">
                 <a class="item"><i class="user icon"></i> Login</a>
                 <a class="item"><i class="user plus icon"></i> Register</a>
-                <a class="item"><i class="bars icon"></i> Dashbord</a>
+                <a class="item"><i class="bars icon"></i> Dashboard</a>
                 </div>
             </div>
         </div>
@@ -34,11 +34,11 @@
 <div class="ui container">
     
    <div class="ui centered grid">
-        <div class="computer only row">
+        <div class="row">
             <div class="column">
-                <form action="/add" method="POST">
+                <form action="{{ url_for('addTodo') }}" method="POST">
                     <div class="ui action fluid tiny input">
-                        <input type="text" name="title" placeholder="Type ToDo">
+                        <input type="text" name="title" placeholder="Type ToDo" maxlength="80" required>
                         <button class="ui labeled icon primary tiny button">
                             <i class="plus icon"></i>
                             Add ToDo
@@ -47,25 +47,25 @@
                  </form>
             </div>
         </div>
-        <div class="computer only row">
+        <div class="row">
             <div class="column">
            
               <div class="ui raised padded segment"> 
                 
             
-            {% if todos == [] %}
+            {% if not todos %}
             <div class="ui icon warning message">
                 <i class="exclamation icon"></i>
                 <div class="content">
                 <div class="header">
                     ToDo list empty
                 </div>
-                    <p>Can not found any todo item. You can add a new Todo...</p>
+                    <p>No ToDo items found. You can add a new ToDo...</p>
                 </div>
             </div>
             {% else %}
             
-                <table class="ui very basic compact small table">
+                <table class="ui very basic compact small unstackable table">
                     <thead>
                         <tr>
                             <th><h4>ToDo List</h4></th>
@@ -84,13 +84,19 @@
                             {% endif %}
                             </td>
                             <td>
-                            {% if todo.complete %}
-                                <a href="/complete/{{todo.id}}" class="btn btn-light btn-sm" title="Update state"><i class="toggle large off icon"></i></a>
-                            {% else %}
-                                <a href="/complete/{{todo.id}}" class="btn btn-light btn-sm" title="Update state"><i class="toggle large on icon"></i></a>
-                            {% endif %}
+                                <form action="{{ url_for('complete', id=todo.id) }}" method="POST" style="margin:0">
+                                    <button type="submit" class="ui icon basic mini button" title="Update state">
+                                        <i class="toggle large {{ 'off' if todo.complete else 'on' }} icon"></i>
+                                    </button>
+                                </form>
                             </td>
-                            <td><a href="/delete/{{todo.id}}" class="btn btn-danger btn-sm" title="Delete item"><i class="trash alternate outline icon"></i></a></td>
+                            <td>
+                                <form action="{{ url_for('delete', id=todo.id) }}" method="POST" style="margin:0">
+                                    <button type="submit" class="ui icon basic red mini button" title="Delete item">
+                                        <i class="trash alternate outline icon"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
 
